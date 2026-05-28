@@ -3,21 +3,22 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     phone:{
         type:String,
-        required:true,
-        unique:true
+        required:false,
+        unique:false
     },
     phoneSuffix:{
         type:String,
-        required:true
+        required:false
     },
     userName:{
         type:String,
-        required:true
+        required:false
     },
     email:{
         type:String,
-        required:true,
+        required:false,
         unique:true,
+        sparse:true,
         validate: {
             validator: function(v) {
                 return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
@@ -26,14 +27,14 @@ const userSchema = new mongoose.Schema({
     },
     emailotp:{
         type:String,
-        required:true
+        required:false
     },
     emailotpExpires:{
         type:Date,
-        required:true
     },
     profilePicture:{
         type:String,
+        required:false
     },
     about:{
         type:String,
@@ -56,5 +57,5 @@ const userSchema = new mongoose.Schema({
     }
 },{timestamps:true});
 
-const User = mongoose.model("user",userSchema);
+const User = mongoose.models.user || mongoose.model("user", userSchema, "users");
 module.exports = User;
