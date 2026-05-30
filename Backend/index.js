@@ -17,7 +17,7 @@ const app = express();
 
 const corsOption = {
     origin:process.env.FRONTEND_URL,
-    crediantials:true,
+    credentials:true,
 
 }
 
@@ -25,7 +25,6 @@ app.use(cors(corsOption));
 
 //middlewares
 app.use(express.json()); //to parse json data
-app.use(cors()); 
 app.use(cookieParser()); //to parse cookies
 app.use(bodyParser.urlencoded({ extended: true })); //to parse urlencoded data
 

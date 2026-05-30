@@ -1,17 +1,33 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { BrowserRouter as Router ,Routes , Route } from 'react-router-dom'
 import './App.css'
+import Login from "../src/Pages/User-Login/userLogin";
+ import { ToastContainer, toast } from 'react-toastify';
+ import "react-toastify/dist/ReactToastify.css";
+import { publicRoute as PublicRoute, protectedRoute as ProtectedRoute } from './protected';
+import HomePage from './components/homePage';
+import Setting from "./Pages/SettingSection/setting"
+import UserDetails from "./components/userDetails"
+import Status from "./Pages/StatusSection/status"
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <h1 className="text-3xl font-bold underline">
-        Hello, Vite!
-      </h1>
+    <ToastContainer position='top-right' autoClose={3000} />
+      <Router>
+        <Routes>
+          <Route element={<PublicRoute />}>
+          <Route path='/user-login' element={<Login/>}></Route>
+          </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route path='/' element={<HomePage/>}/>
+            <Route path='/user-profile' element={<UserDetails/>}/>
+            <Route path='/status' element={<Status/>}/>
+            <Route path='/setting' element={<Setting/>}/>
+          </Route>
+        </Routes>
+      </Router>
     </>
   )
 }

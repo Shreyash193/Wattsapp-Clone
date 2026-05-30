@@ -1,5 +1,5 @@
 const optGenerator = require('../Utils/otpGenerator');
-const twilioService = require("../Services/twilioService");
+const twilioService = require("../Services/twilioservice");
 const User = require('../Models/user');
 const generateToken = require('../Utils/generteToken');
 const { sendOtpToEmail } = require('../Services/emailService');
