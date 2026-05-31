@@ -32,9 +32,9 @@ export const updateUserProfile = async ( updateData)=>{
 }
 
 export const checkUserAuth = async()=>{
-    const response = await axiosInstance.get('/auth/check-auth');
+    const response = await axiosInstance.post('/auth/check-auth');
     if(response.data.status === "success"){
-        return {isAuthenticated:true,user:response?.data?.data}
+        return {isAuthenticated:true,user:response?.data?.data?.user}
     }
     else if(response.data.status === "error"){
         throw error.response ? error.response.data : error.message;
@@ -53,11 +53,11 @@ export const logoutUser = async () =>{
 
 export const getAllUsers = async()=>{
     try{
-        const response = await axiosInstance.get('/auth/users');
+        const response = await axiosInstance.get('/auth/get-users');
         return response.data;
     }
     catch(error){
-        throw error.reaponse ? error.response.data : error.message;
+        throw error.response ? error.response.data : error.message;
     }
 }
 

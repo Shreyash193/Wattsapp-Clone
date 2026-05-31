@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BrowserRouter as Router ,Routes , Route } from 'react-router-dom'
 import './App.css'
 import Login from "../src/Pages/User-Login/userLogin";
@@ -9,8 +9,22 @@ import HomePage from './components/homePage';
 import Setting from "./Pages/SettingSection/setting"
 import UserDetails from "./components/userDetails"
 import Status from "./Pages/StatusSection/status"
+import userUserStore from './Store/useUserStore';
+import { dissconnectSocket, initializeSocket } from './services/chat.service';
 
 function App() {
+
+  const {user}=userUserStore();
+
+  useEffect(()=>{
+    if(user?._id){
+      const socket=initializeSocket();
+    }
+
+    return ()=>{
+      dissconnectSocket();
+    }
+  },[user])
 
   return (
     <>

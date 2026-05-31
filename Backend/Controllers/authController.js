@@ -99,7 +99,7 @@ const verifyOtp = async(req,res)=>{
             httpOnly:true,
             maxAge:7*24*60*60*1000
         });
-        return response(res,200,"OTP verified successfully",{token});
+        return response(res,200,"OTP verified successfully",{token,user});
     }
     catch(err){
         console.error(err);
@@ -110,7 +110,7 @@ const verifyOtp = async(req,res)=>{
 
 const updateProfile = async(req,res)=>{
     console.log("updating profile");
-    const {userName,aggreed,about}=req.body || {};
+    const {userName,username,aggreed,agreed,about}=req.body || {};
     const userId=req.userId;
     try{
         const user = await User.findById(userId);
@@ -126,11 +126,13 @@ const updateProfile = async(req,res)=>{
             user.profilePicture=req.body.profilePicture;
         }
 
-        if(userName){
-            user.userName=userName;
+        const profileName = userName || username;
+        if(profileName){
+            user.userName=profileName;
         }
-        if(aggreed !== undefined){
-            user.aggreed=aggreed;
+        const profileAgreed = aggreed ?? agreed;
+        if(profileAgreed !== undefined){
+            user.aggreed=profileAgreed;
         }
         if(about){
             user.about=about;
@@ -158,7 +160,7 @@ const checkAuthenticated = async(req,res)=>{
             return res.status(404).json("User not found");
         }
 
-        return res.status(200).json("Authenticated",{user});
+        return response(res,200,"Authenticated",{user});
     }
     catch(err){
         console.error(err);
@@ -180,7 +182,7 @@ const logout = async(req,res)=>{
 const getAllUsers = async(req,res)=>{
     const loggedInUser = req.userId;
     try{
-        const users = await User.find({_id:{$ne:loggedInUser}}).select("userName ProfilePicture isonline lastseen about phone phoneSuffix").lean();
+        const users = await User.find({_id:{$ne:loggedInUser}}).select("userName profilePicture isonline lastseen about phone phoneSuffix").lean();
 
         const userWithConversation = await Promise.all(users.map(async(user)=>{
             const conversation = await Conversation.findOne({

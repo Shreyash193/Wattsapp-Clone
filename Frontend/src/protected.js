@@ -3,6 +3,7 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import userUserStore from "./Store/useUserStore";
 import Loader from "./Utils/Loader";
+import { checkUserAuth } from "./services/user.service";
 
 export const protectedRoute = ()=>{
     const location = useLocation();
@@ -13,7 +14,7 @@ export const protectedRoute = ()=>{
     useEffect(()=>{
         const verifyAuth=async ()=>{
             try{
-                const result=await result.isAuthenticated();
+                const result=await checkUserAuth();
                 if(result?.isAuthenticated){
                     setUser(result.user);
                 }

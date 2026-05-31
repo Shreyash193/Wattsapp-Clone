@@ -56,7 +56,7 @@ exports.sendMessage = async (req,res)=>{
         })
         await message.save();
         if(message?.content){
-               conversation.lastMessage = message._id;
+               conversation.lastMessage = message?._id;
         }
         conversation.unreadCount += 1;
         await conversation.save();
@@ -71,7 +71,7 @@ exports.sendMessage = async (req,res)=>{
            if(receiverSocketId){
             req.io.to(receiverSocketId).emit("receive_message",populatedMessage);
             message.messageStatus="delivered";
-            await message.Save();
+            await message.save();
            }
         }
 
@@ -113,7 +113,7 @@ exports.getMessages = async(req,res)=>{
         .populate("receiver","userName profilePicture")
         .sort({createdAt:1});
 
-        await Message.updateMany({conversation:conversationId,receiver:userId,messageStatus:{$in:["send","delivered"]}},{$set:{messageStatus:"read"}});
+        await Message.updateMany({conversation:conversationId,receiver:userId,messageStatus:{$in:["sent","delivered"]}},{$set:{messageStatus:"read"}});
 
         conversation.unreadCount=0;
         await conversation.save();
@@ -130,7 +130,7 @@ exports.markAsRead = async(req,res)=>{
     const {messageIds }= req.body;
     const userId = req.userId;
     try{
-        let message = await Message.find({
+        let messages = await Message.find({
             _id:{$in:messageIds},
             receiver:userId,
         });
@@ -139,6 +139,12 @@ exports.markAsRead = async(req,res)=>{
             {_id:{$in:messageIds},receiver:userId},
             {$set:{messageStatus:"read"}}
 
+        );
+
+        const conversationIds = [...new Set(messages.map((message)=>message.conversation.toString()))];
+        await Conversation.updateMany(
+            {_id:{$in:conversationIds}},
+            {$set:{unreadCount:0}}
         );
 
         //Emit event by scoket 

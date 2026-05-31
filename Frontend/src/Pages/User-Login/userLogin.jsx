@@ -73,7 +73,7 @@ const Login = () => {
   const [serchTerm, setSerchTerm] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { setuser: setUser } = useUserStore();
+  const { setUser } = useUserStore();
   const { theme } = userThemeStore();
   const [loading,setLoding]=useState(false);
 
@@ -158,7 +158,7 @@ const Login = () => {
         toast.success("OTP verify successfully");
         console.log(response);
         const user= response.data?.user;
-        if(user?.username && user?.profilePicture){
+        if(user?.userName && user?.profilePicture){
           setUser(user);
           toast.success("welcome back to whatsapp");
           navigate("/");
