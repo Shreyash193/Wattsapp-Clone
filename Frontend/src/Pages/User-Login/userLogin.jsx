@@ -347,7 +347,7 @@ const handleBack= ()=>{
               onChange={(e) => setPhoneNumber(e.target.value)}
               placeholder="phone number"
               className={`w-2/3 h-full px-4 border rounded-r-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 
-                ${theme === "dark" ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300"} 
+                ${theme === "dark" ? "bg-gray-700 border-gray-600 text-white" : "bg-white border-gray-300 text-black"} 
                 ${loginErrors.phoneNumber ? "border-red-500" : ""}`}
             />
           </div>
@@ -376,7 +376,7 @@ const handleBack= ()=>{
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="email"
-              className="w-full h-full bg-transparent text-sm focus:outline-none text-gray-900 dark:text-black"
+              className="w-full h-full bg-transparent text-sm focus:outline-none text-black"
             />
           </div>
           {loginErrors.email && (

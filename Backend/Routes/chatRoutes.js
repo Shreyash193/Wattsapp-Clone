@@ -6,7 +6,7 @@ const chatController = require("../Controllers/chatController");
 
 const router = express.Router();
 
-router.post("/send-message",authMiddleware,chatController.sendMessage);
+router.post("/send-message",authMiddleware,multerMiddleware,chatController.sendMessage);
 router.get("/conversations",authMiddleware,chatController.getConversations);
 router.get("/conversations/:conversationId/messages",authMiddleware,chatController.getMessages);
 

@@ -31,20 +31,19 @@ const otpSend = async (req, res) => {
             return response(res, 200, "OTP sent to email", { email });
         }
         if (!phone || !phoneSuffix) {
-            
-                return response(res, 400, "Phone number and suffix are required");
+            return response(res, 400, "Phone number and suffix are required");
         }
-        
-            const fullPhoneNumber = `${phoneSuffix}${phone}`;
-            user = await User.findOne({ phone });
-            if (!user) { 
-                user = await new User({ phone, phoneSuffix });
-            }
 
-            await twilioService.sendOTPtoPhoneNumber(fullPhoneNumber);
-            await user.save();
-    
-            return response(res, 200, "OTP sent to phone number", { phone: fullPhoneNumber });
+        const fullPhoneNumber = `${phoneSuffix}${phone}`;
+        user = await User.findOne({ phone });
+        if (!user) {
+            user = new User({ phone, phoneSuffix });
+        }
+
+        await twilioService.sendOTPtoPhoneNumber(fullPhoneNumber);
+        await user.save();
+
+        return response(res, 200, "OTP sent to phone number", { phone: fullPhoneNumber });
         
     }
     catch (err) {

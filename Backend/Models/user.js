@@ -4,7 +4,8 @@ const userSchema = new mongoose.Schema({
     phone:{
         type:String,
         required:false,
-        unique:false
+        unique:false,
+        sparse:true
     },
     phoneSuffix:{
         type:String,
@@ -19,6 +20,7 @@ const userSchema = new mongoose.Schema({
         required:false,
         unique:true,
         sparse:true,
+        default:undefined,
         validate: {
             validator: function(v) {
                 return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);

@@ -61,7 +61,7 @@ exports.sendMessage = async (req,res)=>{
         conversation.unreadCount += 1;
         await conversation.save();
 
-        const populatedMessage = await Message.findOne(message?._id).populate("sender","userName profilePicture")
+        const populatedMessage = await Message.findById(message?._id).populate("sender","userName profilePicture")
         .populate("receiver","userName profilePicture");
 
         //emit event by socket

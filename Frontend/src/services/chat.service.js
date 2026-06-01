@@ -9,7 +9,7 @@ export const initializeSocket=()=>{
     }
     const user=userUserStore.getState().user;
 
-    const BACKEND_URL=meta.env.VITE_API_URL ;
+    const BACKEND_URL=import.meta.env.VITE_API_URL || "http://localhost:3000";
 
     socket=io (BACKEND_URL,{
         withCredentials:true,
@@ -30,8 +30,8 @@ export const initializeSocket=()=>{
     })
     
     //disconnection error
-     socket.on("dissconnect",(reason)=>{
-        console.log("socket dissconnected",reason);
+     socket.on("disconnect",(reason)=>{
+        console.log("socket disconnected",reason);
        
     })
 
@@ -47,7 +47,7 @@ export const getSocket = ()=>{
 
 export const dissconnectSocket=()=>{
     if(socket){
-        socket.dissconnect();
+        socket.disconnect();
         socket=null;
     }
 }

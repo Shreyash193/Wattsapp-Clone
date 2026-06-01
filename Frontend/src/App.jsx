@@ -11,20 +11,28 @@ import UserDetails from "./components/userDetails"
 import Status from "./Pages/StatusSection/status"
 import userUserStore from './Store/useUserStore';
 import { dissconnectSocket, initializeSocket } from './services/chat.service';
+import { useChatStore } from './Store/chatStore';
 
 function App() {
 
   const {user}=userUserStore();
+  const {setCurrentUser,initSocketListners,cleanUp}=useChatStore();
 
   useEffect(()=>{
     if(user?._id){
       const socket=initializeSocket();
+
+      if(socket){
+        setCurrentUser(user);
+        initSocketListners();
+          }
     }
 
     return ()=>{
+      cleanUp();
       dissconnectSocket();
     }
-  },[user])
+  },[user,setCurrentUser,initSocketListners,cleanUp])
 
   return (
     <>
